@@ -1,0 +1,71 @@
+.nps-form {
+    font-family: Arial, sans-serif;
+}
+
+.nps-rating {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.nps-rating label {
+    cursor: pointer;
+    padding: 13px;
+    border: 2px solid var(--color);
+    border-radius: 100%;
+    text-align: center;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.nps-rating input[type="radio"] {
+    display: none;
+}
+
+.nps-rating input[type="radio"]:checked + label {
+    background-color: var(--color);
+    color: white;
+}
+
+.nps-rating input[type="radio"] + label:hover {
+    background-color: var(--color);
+    color: white;
+}
+
+@media (max-width: 500px) {
+    .nps-rating {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+    }
+
+    .nps-rating label {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 350px) {
+    .nps-rating {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.caras input[type="radio"] + label:hover {
+    cursor: pointer;
+}
+
+.caras input[type="radio"] {
+    display: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.caras input[type="radio"]:checked + label i{
+    color: var(--color);
+}
+
+.caras input[type="radio"] + label i:hover {
+    cursor: pointer;
+    color: var(--color);
+}

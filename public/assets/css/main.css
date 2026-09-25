@@ -1,0 +1,20 @@
+.pregunta-nueva {
+    border-radius: 5px;
+    padding: 2px 3px;
+}
+.pregunta-nueva:hover {
+    background-color: #ededed;
+    /* padding: 5px; */
+}
+
+.fondo-amarillo {
+    background-color: #fbc44c;
+}
+body {
+    zoom: 80%;
+  }
+
+.modal-backdrop {
+    width:100% !important;
+    height: 100% !important;
+}
