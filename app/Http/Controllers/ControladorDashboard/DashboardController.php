@@ -250,20 +250,20 @@ class DashboardController extends Controller{
 
         // Respueta a comentarios
         $comentarios = Respuesta::query()
-            ->join('pregunta','pregunta.id_pregunta','=','respuesta.id_pregunta')
-            ->join('envio_encuesta','envio_encuesta.id_envio_encuesta','=','respuesta.id_envio_encuesta')
-            ->where('pregunta.id_encuesta', $idEncuesta)
-            ->where('pregunta.id_tipo_pregunta', 3)
-            ->where('respuesta.id_empresa', $idEmpresa)
-            ->where('envio_encuesta.id_estado', 2)
-            ->whereNotNull('respuesta.respuesta')
-            ->whereRaw("LTRIM(RTRIM(respuesta.respuesta)) <> ''")
-            ->select(
-                'respuesta.respuesta',
-                'pregunta.pregunta'
-            )
-            ->orderBy('respuesta.id_respuesta', 'desc')
-            ->get();
+                            ->join('pregunta','pregunta.id_pregunta','=','respuesta.id_pregunta')
+                            ->join('envio_encuesta','envio_encuesta.id_envio_encuesta','=','respuesta.id_envio_encuesta')
+                            ->where('pregunta.id_encuesta', $idEncuesta)
+                            ->where('pregunta.id_tipo_pregunta', 3)
+                            ->where('respuesta.id_empresa', $idEmpresa)
+                            ->where('envio_encuesta.id_estado', 2)
+                            ->whereNotNull('respuesta.respuesta')
+                            ->whereRaw("LTRIM(RTRIM(respuesta.respuesta)) <> ''")
+                            ->select(
+                                'respuesta.respuesta',
+                                'pregunta.pregunta'
+                            )
+                            ->orderBy('respuesta.id_respuesta', 'desc')
+                            ->get();
 
         // Datos generales
         return view('dashboard.index',[
@@ -295,8 +295,6 @@ class DashboardController extends Controller{
 
             // Comentarios
             'comentarios' => $comentarios,
-
-            
         ]);
     }
 }

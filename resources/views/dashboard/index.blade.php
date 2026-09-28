@@ -32,69 +32,109 @@
         </a>
     </div>
     <div class="row g-4 mb-4">
+
         {{-- Encuestas enviadas --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
+                <div class="card-body p-3">
+
                     <div class="indicador-titulo">
-                        <h4><b>ENCUESTAS ENVIADAS</b></h4>
+                        <h5><b>ENCUESTAS ENVIADAS</b></h5>
                     </div>
+
                     <div class="indicador-valor">
                         {{ $totalEnviadas }}
                     </div>
+
                     <div class="indicador-descripcion">
-                        Total de encuestas enviadas a huéspedes
+                        Total enviadas
                     </div>
+
                 </div>
             </div>
         </div>
 
+
         {{-- Encuestas respondidas --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
+                <div class="card-body p-3">
+
                     <div class="indicador-titulo">
-                        <h4><b>ENCUESTAS RESPONDIDAS</b></h4>
+                        <h5><b>ENCUESTAS RESPONDIDAS</b></h5>
                     </div>
+
                     <div class="indicador-valor">
                         {{ $totalRespondidas }}
                     </div>
+
                     <div class="indicador-descripcion">
-                        Total de encuestas respondidas
+                        Total respondidas
                     </div>
+
                 </div>
             </div>
         </div>
 
+
         {{-- Encuestas pendientes --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
+                <div class="card-body p-3">
+
                     <div class="indicador-titulo">
-                        <h4><b>ENCUESTAS PENDIENTES</b></h4>
+                        <h5><b>ENCUESTAS PENDIENTES</b></h5>
                     </div>
+
                     <div class="indicador-valor">
                         {{ $totalPendientes }}
                     </div>
+
                     <div class="indicador-descripcion">
-                        Total de encuestas pendientes por responder
+                        Por responder
                     </div>
+
                 </div>
             </div>
         </div>
 
+
         {{-- Tasa de respuesta --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
-                <div class="card-body p-4">
+                <div class="card-body p-3">
+
                     <div class="indicador-titulo">
-                        <h4><b>TASA DE RESPUESTA</b></h4>
+                        <h5><b>TASA DE RESPUESTA</b></h5>
                     </div>
+
                     <div class="indicador-valor">
                         {{ $porcentajeRespuesta }}%
                     </div>
+
                     <div class="indicador-descripcion">
-                        Porcentaje de encuestas respondidas
+                        Encuestas respondidas
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        
+        {{-- Recomendación NPS --}}
+        <div class="col-xl col-md-6">
+            <div class="card dashboard-card border-0 shadow-sm h-100">
+                <div class="card-body p-3">
+
+                    <div class="indicador-titulo">
+                        <h5><b>RECOMENDACIÓN</b></h5>
+                    </div>
+
+                    <div class="indicador-valor">
+                        {{ $npsValor > 0 ? '+' : '' }}{{ $npsValor }}
+                    </div>
+
+                    <div class="indicador-descripcion">
+                        Puntos NPS
                     </div>
                 </div>
             </div>
@@ -316,10 +356,7 @@
                                                     </div>
                                                     @if($area['mejorPreguntaPromedio'] !== null)
                                                         <div class="resultado-pregunta-puntaje">
-                                                            {{ number_format($area['mejorPreguntaPromedio'], 1,
-                                                                ',',
-                                                                '.'
-                                                            ) }} / 5
+                                                            {{ number_format($area['mejorPreguntaPromedio'], 1, ',', '.') }} / 5
                                                         </div>
                                                     @endif
                                                 </div>
@@ -336,9 +373,7 @@
 
                                                         <div class="resultado-pregunta-puntaje">
 
-                                                            {{ number_format(
-                                                                $area['peorPreguntaPromedio'],
-                                                                1,
+                                                            {{ number_format($area['peorPreguntaPromedio'], 1,
                                                                 ',',
                                                                 '.'
                                                             ) }} / 5
@@ -365,10 +400,9 @@
                                     Recomendación de Hotel MAE
                                 </h2>
                             </div>
-                            <div class="section-description">
-                                Qué tan probable es que los huéspedes recomienden
-                                su experiencia en Hotel MAE.
-                            </div>
+                            {{-- <div class="section-description">
+                                Qué tan probable es que los huéspedes recomienden su experiencia en Hotel MAE.
+                            </div> --}}
 
                             <div class="recomendacion-etiqueta">
                                 Resultado de recomendación
@@ -382,22 +416,12 @@
                                 Escala NPS: -100 a +100 puntos.
                             </div>
 
-                            {{-- Separador --}}
+                            {{-- Separador antes del gráfico --}}
                             <div class="recomendacion-separador"></div>
-                            <div class="section-title text-center">
-                                <h2>
-                                    Evaluación de los huéspedes
-                                </h2>
-                            </div>
-                            <div class="section-description text-center mb-3">
-                                Distribución de las respuestas según el nivel de recomendación de los huéspedes.
-                            </div>
-
                             {{-- Gráfico NPS --}}
                             <div class="grafico-nps">
                                 <canvas id="graficoNps"></canvas>
                             </div>
-
                             {{-- Resumen de evaluación --}}
                             <div class="evaluacion-resumen">
                                 {{-- Muy satisfechos --}}
@@ -459,7 +483,6 @@
                     </div>
                 </div>
             </div>
-
     {{-- Comentarios de huéspedes --}}
     <div class="card dashboard-card comentarios-card border-0 shadow-sm mb-4">
         <div class="card-body p-4">
@@ -646,7 +669,6 @@
     const labelsAreas = @json($labelsAreas);
     const datosAreas = @json($datosAreas);
 
-
     //Participación
     const ctxRespuestas = document.getElementById('graficoRespuestas').getContext('2d');
     const totalEncuestas = totalRespondidas + totalPendientes;
@@ -684,7 +706,6 @@
             }
         }
     });
-
 
     // Satisfacción gral
     document.getElementById('satisfaccionGeneral').innerText = satisfaccionGeneral.toFixed(1).replace('.', ',');
@@ -978,7 +999,7 @@
 
                         title: function(context) {
 
-                            if (!context || context.length === 0) {
+                            if(!context || context.length === 0){
 
                                 return '';
                             }
@@ -992,14 +1013,12 @@
 
                             const valor = context.parsed.y;
 
-                            if (valor === null || valor === undefined) {
+                            if(valor === null || valor === undefined){
 
                                 return context.dataset.label + ': Sin datos';
                             }
 
-                            return context.dataset.label +
-                                ': ' +
-                                Number(valor)
+                            return context.dataset.label + ': ' + Number(valor)
                                     .toFixed(1)
                                     .replace('.', ',') +
                                 ' / 5';

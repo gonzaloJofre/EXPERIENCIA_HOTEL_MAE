@@ -159,7 +159,7 @@
                                 @php
                                     $numeroPregunta++;
                                 @endphp
-
+                                
                                 {{-- Preguntas --}}
                                 <div class="nps-form pregunta-encuesta" style="text-align: justify;">
                                     <div class="pregunta-titulo">

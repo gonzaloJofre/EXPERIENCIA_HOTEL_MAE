@@ -61,8 +61,6 @@ class ComentariosExport implements FromArray, WithTitle
 
         $datos = [
             [
-                'ID respuesta',
-                'ID envío',
                 'Huésped',
                 'Pregunta',
                 'Comentario'
@@ -78,8 +76,6 @@ class ComentariosExport implements FromArray, WithTitle
             }
 
             $datos[] = [
-                $comentario->id_respuesta,
-                $comentario->id_envio_encuesta,
                 $nombreHuesped,
                 $comentario->pregunta ?? '',
                 $comentario->respuesta ?? '',
