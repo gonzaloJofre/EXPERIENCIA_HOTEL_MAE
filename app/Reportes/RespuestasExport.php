@@ -83,35 +83,18 @@ class RespuestasExport implements FromArray, WithTitle
 
         foreach($respuestas as $respuesta){
 
-            $nombreHuesped = trim(
-                ($respuesta->nombre_huesped ?? '') . ' ' .
-                ($respuesta->apellido_huesped ?? '')
-            );
+            $nombreHuesped = trim(($respuesta->nombre_huesped ?? '') . ' ' . ($respuesta->apellido_huesped ?? ''));
 
-            if ($nombreHuesped === '') {
+            if($nombreHuesped === ''){
                 $nombreHuesped = 'No identificado';
             }
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | RESPUESTA ORIGINAL
-            |--------------------------------------------------------------------------
-            */
 
             $respuestaTexto = trim((string) ($respuesta->respuesta ?? ''));
 
             $tipoPregunta = trim((string) ($respuesta->tipo_pregunta ?? ''));
             $preguntaTexto = trim((string) ($respuesta->pregunta ?? ''));
 
-
-            /*
-            |--------------------------------------------------------------------------
-            | CHECKBOX / ESCALA 1 A 5
-            |--------------------------------------------------------------------------
-            */
-
-            if ($tipoPregunta === 'Checkbox') {
+            if($tipoPregunta === 'Checkbox'){
 
                 $escalaCheckbox = [
                     1 => 'Muy insatisfecho',
@@ -123,22 +106,11 @@ class RespuestasExport implements FromArray, WithTitle
 
                 $valor = (int) $respuestaTexto;
 
-                if (isset($escalaCheckbox[$valor])) {
+                if (isset($escalaCheckbox[$valor])){
                     $respuestaTexto = $escalaCheckbox[$valor];
                 }
             }
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | SÍ / NO
-            |--------------------------------------------------------------------------
-            */
-
-            elseif (
-                strcasecmp($tipoPregunta, 'Si/No') === 0 ||
-                strcasecmp($tipoPregunta, 'Sí/No') === 0
-            ) {
+            elseif (strcasecmp($tipoPregunta, 'Si/No') === 0 || strcasecmp($tipoPregunta, 'Sí/No') === 0){
 
                 $valor = strtolower($respuestaTexto);
 
@@ -148,9 +120,6 @@ class RespuestasExport implements FromArray, WithTitle
                     $respuestaTexto = 'No';
                 }
             }
-
-
-            /*Selección Múltiple*/
             elseif (str_contains(strtolower($tipoPregunta), 'multiple') || str_contains(strtolower($tipoPregunta), 'múltiple')){
 
                 $valor = $respuestaTexto;
@@ -184,7 +153,6 @@ class RespuestasExport implements FromArray, WithTitle
                 $respuestaTexto,
             ];
         }
-
         return $datos;
     }
 }
