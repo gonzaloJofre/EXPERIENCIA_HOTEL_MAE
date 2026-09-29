@@ -50,7 +50,6 @@ class ParticipantesExport implements FromArray, WithTitle
 
         $datos = [
             [
-                'ID envío',
                 'Huésped',
                 'Correo',
                 'Teléfono',
@@ -97,7 +96,6 @@ class ParticipantesExport implements FromArray, WithTitle
             $estado = (int) $envio->id_estado === 2 ? 'Respondida' : 'Pendiente';
 
             $datos[] = [
-                $envio->id_envio_encuesta,
                 $nombreHuesped,
                 $envio->correo ?? '',
                 $envio->telefono ?? '',

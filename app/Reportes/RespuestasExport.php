@@ -8,11 +8,13 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 
 class RespuestasExport implements FromArray, WithTitle
 {
-    public function title(): string{
+    public function title(): string
+    {
         return 'Respuestas';
     }
 
     public function array(): array{
+
         $idEncuesta = 3;
         $idEmpresa  = 1;
 
@@ -72,34 +74,117 @@ class RespuestasExport implements FromArray, WithTitle
 
         $datos = [
             [
-                'ID respuesta',
-                'ID envío',
                 'Huésped',
                 'Categoría',
                 'Pregunta',
-                'Tipo de pregunta',
                 'Respuesta'
             ]
         ];
 
-        foreach ($respuestas as $respuesta) {
+        foreach($respuestas as $respuesta){
 
-            $nombreHuesped = trim(($respuesta->nombre_huesped ?? '') . ' ' . ($respuesta->apellido_huesped ?? ''));
+            $nombreHuesped = trim(
+                ($respuesta->nombre_huesped ?? '') . ' ' .
+                ($respuesta->apellido_huesped ?? '')
+            );
 
-            if($nombreHuesped === ''){
-                $nombreHuesped = 'Sin huésped asociado';
+            if ($nombreHuesped === '') {
+                $nombreHuesped = 'No identificado';
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | RESPUESTA ORIGINAL
+            |--------------------------------------------------------------------------
+            */
+
+            $respuestaTexto = trim((string) ($respuesta->respuesta ?? ''));
+
+            $tipoPregunta = trim((string) ($respuesta->tipo_pregunta ?? ''));
+            $preguntaTexto = trim((string) ($respuesta->pregunta ?? ''));
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CHECKBOX / ESCALA 1 A 5
+            |--------------------------------------------------------------------------
+            */
+
+            if ($tipoPregunta === 'Checkbox') {
+
+                $escalaCheckbox = [
+                    1 => 'Muy insatisfecho',
+                    2 => 'Insatisfecho',
+                    3 => 'Neutro',
+                    4 => 'Satisfecho',
+                    5 => 'Muy satisfecho',
+                ];
+
+                $valor = (int) $respuestaTexto;
+
+                if (isset($escalaCheckbox[$valor])) {
+                    $respuestaTexto = $escalaCheckbox[$valor];
+                }
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | SÍ / NO
+            |--------------------------------------------------------------------------
+            */
+
+            elseif (
+                strcasecmp($tipoPregunta, 'Si/No') === 0 ||
+                strcasecmp($tipoPregunta, 'Sí/No') === 0
+            ) {
+
+                $valor = strtolower($respuestaTexto);
+
+                if ($valor === '1' || $valor === 'si' || $valor === 'sí') {
+                    $respuestaTexto = 'Sí';
+                } elseif ($valor === '0' || $valor === 'no') {
+                    $respuestaTexto = 'No';
+                }
+            }
+
+
+            /*Selección Múltiple*/
+            elseif (str_contains(strtolower($tipoPregunta), 'multiple') || str_contains(strtolower($tipoPregunta), 'múltiple')){
+
+                $valor = $respuestaTexto;
+                $json = json_decode($valor, true);
+
+                if(json_last_error() === JSON_ERROR_NONE && is_array($json)){
+
+                    $elementos = [];
+
+                    foreach ($json as $elemento){
+
+                        if (is_array($elemento)){
+                            $elementos[] = implode(', ', $elemento);
+                        } else {
+                            $elementos[] = (string) $elemento;
+                        }
+                    }
+
+                    $respuestaTexto = implode(', ', $elementos);
+                }
+            }
+
+            if($respuestaTexto === ''){
+                $respuestaTexto = 'Sin respuesta';
             }
 
             $datos[] = [
-                $respuesta->id_respuesta,
-                $respuesta->id_envio_encuesta,
                 $nombreHuesped,
                 $respuesta->categoria ?? '',
-                $respuesta->pregunta ?? '',
-                $respuesta->tipo_pregunta ?? '',
-                $respuesta->respuesta ?? '',
+                $preguntaTexto,
+                $respuestaTexto,
             ];
         }
+
         return $datos;
     }
 }
