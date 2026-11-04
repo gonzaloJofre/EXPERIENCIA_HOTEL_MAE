@@ -10,7 +10,8 @@
 
 .dashboard-card:hover,
 .resumen-area-card:hover {
-    box-shadow: 0 6px 18px rgba(47, 47, 47, 0.16) !important;
+    /* box-shadow: 0 6px 18px rgba(47, 47, 47, 0.16) !important; */
+    box-shadow: 0 10px 26px rgba(47, 47, 47, 0.12) !important;
 }
 
 .card h5 {
@@ -942,7 +943,7 @@
 
 /*Excel*/
 .btn-excel{
-    background-color: #1E4F63;
+    background-color: #1f5726;
     color: #FFFFFF;
     border: none;
     padding: 16px 18px;
@@ -951,7 +952,7 @@
 }
 
 .btn-excel:hover{
-    background-color: #163D4D;
+    background-color: #18441e;
     color: #FFFFFF;
 }
 
@@ -1095,7 +1096,7 @@
 
 .resumen-area-card,
 .resumen-recomendacion-card {
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12) !important;
     border-radius: 10px;
 }
 
@@ -1177,3 +1178,5 @@
     margin-top: 20px;
     margin-bottom: 22px;
 }
+
+

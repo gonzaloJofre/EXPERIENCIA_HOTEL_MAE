@@ -240,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const inputTodas = opcionTodas.querySelector('input');
     const opcionesCategorias = document.querySelectorAll('.categoria-check');
 
-
     opcionesSeccion.forEach(function(opcion){
 
         const input = opcion.querySelector('input');

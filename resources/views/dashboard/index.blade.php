@@ -3,6 +3,7 @@
 @section('titulo', 'Dashboard')
 @section('link')
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/reporte-hotelmae.css') }}">
 @endsection
 @section('contenido')
 
@@ -25,67 +26,84 @@
 
     <br><br>
     {{-- Botón Excel --}}
-    <div class="d-flex justify-content-end mb-3">
-        <a href="{{ route('reportes.exportar.excel') }}" class="btn btn-excel">
+    <div class="dashboard-filtros">
+        <form action="{{ url()->current() }}" method="GET" class="filtros-periodo">
+            <label for="periodo" class="filtro-label">Período:</label>
+
+            <select name="periodo" id="periodo" class="filtro-select">
+                <option value="todo" {{ $periodo === 'todo' ? 'selected' : '' }}>
+                    Todos los Periodos
+                </option>
+                <option value="semanal" {{ $periodo === 'semanal' ? 'selected' : '' }}>
+                    Semanal
+                </option>
+                <option value="mensual" {{ $periodo === 'mensual' ? 'selected' : '' }}>
+                    Mensual
+                </option>
+                <option value="anual" {{ $periodo === 'anual' ? 'selected' : '' }}>
+                    Anual
+                </option>
+            </select>
+
+            <button type="submit" class="btn btn-filtrar">
+                Filtrar
+            </button>
+        </form>
+
+        {{-- <a href="{{ route('reportes.exportar.excel', ['periodo' => request('periodo', 'mensual')]) }}" class="btn btn-excel">
             <i class="bi bi-file-earmark-excel"></i>
+            &nbsp;
+            Descarga Excel
+        </a> --}}
+        <a href="{{ route('reportes.exportar.excel', ['periodo' => $periodo]) }}" class="btn btn-excel">
+            <i class="bi bi-file-earmark-excel"></i>
+            &nbsp;
             Descarga Excel
         </a>
     </div>
-    <div class="row g-4 mb-4">
 
+    <div class="row g-4 mb-4">
         {{-- Encuestas enviadas --}}
         <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
                 <div class="card-body p-3">
-
                     <div class="indicador-titulo">
                         <h5><b>ENCUESTAS ENVIADAS</b></h5>
                     </div>
-
                     <div class="indicador-valor">
                         {{ $totalEnviadas }}
                     </div>
-
                     <div class="indicador-descripcion">
                         Total enviadas
                     </div>
-
                 </div>
             </div>
         </div>
-
 
         {{-- Encuestas respondidas --}}
         <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
                 <div class="card-body p-3">
-
                     <div class="indicador-titulo">
                         <h5><b>ENCUESTAS RESPONDIDAS</b></h5>
                     </div>
-
                     <div class="indicador-valor">
                         {{ $totalRespondidas }}
                     </div>
-
                     <div class="indicador-descripcion">
                         Total respondidas
                     </div>
-
                 </div>
             </div>
         </div>
-
 
         {{-- Encuestas pendientes --}}
         <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
                 <div class="card-body p-3">
-
                     <div class="indicador-titulo">
                         <h5><b>ENCUESTAS PENDIENTES</b></h5>
                     </div>
-
                     <div class="indicador-valor">
                         {{ $totalPendientes }}
                     </div>
@@ -93,29 +111,23 @@
                     <div class="indicador-descripcion">
                         Por responder
                     </div>
-
                 </div>
             </div>
         </div>
-
 
         {{-- Tasa de respuesta --}}
         <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
                 <div class="card-body p-3">
-
                     <div class="indicador-titulo">
                         <h5><b>TASA DE RESPUESTA</b></h5>
                     </div>
-
                     <div class="indicador-valor">
                         {{ $porcentajeRespuesta }}%
                     </div>
-
                     <div class="indicador-descripcion">
                         Encuestas respondidas
                     </div>
-
                 </div>
             </div>
         </div>
@@ -124,21 +136,19 @@
         <div class="col-xl col-md-6">
             <div class="card dashboard-card border-0 shadow-sm h-100">
                 <div class="card-body p-3">
-
                     <div class="indicador-titulo">
-                        <h5><b>RECOMENDACIÓN</b></h5>
+                        <h5><b>NPS</b></h5>
                     </div>
-
                     <div class="indicador-valor">
-                        {{ $npsValor > 0 ? '+' : '' }}{{ $npsValor }}
+                        {{ $npsValor !== null ? number_format($npsValor, 1, '.', '') : '-' }}%
                     </div>
-
                     <div class="indicador-descripcion">
-                        Puntos NPS
+                        Promedio sobre 10
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     {{-- Particiáción gral --}}
@@ -152,6 +162,7 @@
                     <div class="section-description">
                         Muestra cuántas encuestas fueron respondidas y cuántas están pendientes, considerando el total de encuestas enviadas.
                     </div>
+                    {{-- Gráfico de resultados por área - utilianzado Highcharts --}}
                     <div class="grafico-respuestas">
                         <canvas id="graficoRespuestas"></canvas>
                     </div>
@@ -243,7 +254,7 @@
 
             {{-- Gráfico general --}}
             <div class="grafico-areas mb-4">
-                <canvas id="graficoAreas"></canvas>
+                <div id="graficoAreas"></div>
             </div>
 
             {{-- Resumen de mejor y peor área --}}
@@ -413,7 +424,7 @@
                                 </span>
                             </div>
                             <div class="recomendacion-ayuda">
-                                Escala NPS: -100 a +100 puntos.
+                                Escala NPS: 0 a 10 puntos.
                             </div>
 
                             {{-- Separador antes del gráfico --}}
@@ -429,7 +440,7 @@
                                     <div class="evaluacion-indicador muy-satisfechos"></div>
                                     <div class="evaluacion-info">
                                         <div class="evaluacion-label">
-                                            Muy satisfechos
+                                            Promotores
                                         </div>
                                         <div class="evaluacion-datos">
                                             <strong>
@@ -447,7 +458,7 @@
                                     <div class="evaluacion-indicador satisfechos"></div>
                                     <div class="evaluacion-info">
                                         <div class="evaluacion-label">
-                                            Satisfechos
+                                            Neutros
                                         </div>
                                         <div class="evaluacion-datos">
                                             <strong>
@@ -466,7 +477,7 @@
                                     <div class="evaluacion-indicador poco-satisfechos"></div>
                                     <div class="evaluacion-info">
                                         <div class="evaluacion-label">
-                                            Poco satisfechos
+                                            Detractores
                                         </div>
                                         <div class="evaluacion-datos">
                                             <strong>
@@ -658,6 +669,7 @@
 @section('script')
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
 
 <script>
 
@@ -752,14 +764,13 @@
 
     document.getElementById('textoSatisfaccion').innerText = textoSatisfaccion;
 
-
-    /* -------- Gráfico Resultados por área - comparación -------- */
-    const ctxAreas = document.getElementById('graficoAreas').getContext('2d');
-
+    
+    /* -------- Gráfico Resultados por área - Highcharts -------- */
+    // Datos preparados desde DashboardController
     const labelsAreasMensuales = @json($labelsAreasMensuales);
     const datosAreasMensuales = @json($datosAreasMensuales);
 
-    // Colores de las áreas
+    // Colores institucionales y complementarios de Hotel MAE
     const coloresAreas = [
         '#1E4F63',
         '#D8A84E',
@@ -769,272 +780,135 @@
         '#6C757D'
     ];
 
-    // Crear una línea por cada área
-    const datasetsAreas = Object.entries(datosAreasMensuales).map(
+    // Transformar los datos PHP al formato de series de Highcharts
+    const seriesAreas = Object.entries(datosAreasMensuales).map(
         ([categoria, valores], index) => {
 
-            const color = coloresAreas[index % coloresAreas.length];
-
             return {
-                label: categoria,
-                data: valores,
-                borderColor: color,
-                backgroundColor: color,
-                borderWidth: 3,
-                tension: 0.35,
-                fill: false,
-                pointStyle: 'circle',
-                pointBackgroundColor: color,
-                pointBorderColor: '#FFFFFF',
-                pointBorderWidth: 2,
-                pointRadius: 5,
-                pointHoverRadius: 8,
-                spanGaps: true
+                name: categoria,
+                data: valores.map(valor =>
+                    valor === null ? null : Number(valor)
+                ),
+                color: coloresAreas[index % coloresAreas.length]
             };
         }
     );
 
-    //Al pasar por bloque entre meses... aprezca información del primer mes
-    const hoverPorMes = {
+    // Crear gráfico
+    Highcharts.chart('graficoAreas', {
 
-        id: 'hoverPorMes',
-        beforeEvent(chart, args) {
-            const event = args.event;
-            if (!event || event.type !== 'mousemove') {
-                return;
-            }
-
-            const escalaX = chart.scales.x;
-
-            if (!escalaX) {
-                return;
-            }
-
-            const x = event.x;
-            const cantidadMeses = labelsAreasMensuales.length;
-
-            // Posición real de cada mes en el gráfico
-            const posicionesMeses = [];
-
-            for (let i = 0; i < cantidadMeses; i++) {
-
-                posicionesMeses.push(
-                    escalaX.getPixelForValue(i)
-                );
-            }
-
-            let indice = 0;
-
-            for(let i = 0; i < cantidadMeses - 1; i++){
-
-                const inicio = posicionesMeses[i];
-                const siguiente = posicionesMeses[i + 1];
-
-                if(x >= inicio && x < siguiente){
-
-                    indice = i;
-
-                    break;
-                }
-            }
-
-            // Si está sobre o después del último mes
-            if (x >= posicionesMeses[cantidadMeses - 1]) {
-
-                indice = cantidadMeses - 1;
-            }
-
-            // Si está antes del primer mes
-            if (x < posicionesMeses[0]) {
-
-                indice = 0;
-            }
-
-            const elementosActivos = [];
-
-            chart.data.datasets.forEach(
-                (dataset, datasetIndex) => {
-
-                    const valor = dataset.data[indice];
-
-                    if(valor !== null && valor !== undefined){
-
-                        elementosActivos.push({
-                            datasetIndex: datasetIndex,
-                            index: indice
-                        });
-                    }
-                }
-            );
-
-            chart.setActiveElements(elementosActivos);
-
-            chart.tooltip.setActiveElements(
-                elementosActivos,
-                {
-                    x: posicionesMeses[indice],
-                    y: event.y
-                }
-            );
-
-            args.changed = true;
-
-            return false;
-        }
-    };
-
-
-    new Chart(ctxAreas, {
-
-        type: 'line',
-        plugins: [
-            hoverPorMes
-        ],
-        data: {
-            labels: labelsAreasMensuales,
-            datasets: datasetsAreas
+        chart: {
+            type: 'column',
+            backgroundColor: 'transparent',
+            height: 420,
+            style: {
+                fontFamily: 'Arial, sans-serif'
+            },
+            spacingBottom: 20
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 1200,
-                easing: 'easeOutQuart'
-            },
-            scales: {
-                y: {
-                    min: 1,
-                    max: 5,
-                    ticks: {
-                        stepSize: 1,
-                        color: '#1E4F63',
-                        font: {
-                            size: 13,
-                            weight: '700'
-                        },
-
-                        padding: 8
-                    },
-                    title: {
-                        display: true,
-                        text: 'Satisfacción (1 a 5)',
-                        color: '#1E4F63',
-                        font: {
-                            size: 14,
-                            weight: '700'
-                        },
-                        padding: {
-                            bottom: 10
-                        }
-                    },
-                    grid: {
-                        display: true,
-                        color: '#C9D4D8',
-                        lineWidth: 1
-                    }
-                },
-
-                x: {
-                    offset: false,
-                    ticks: {
-                        color: '#2F2F2F',
-                        font: {
-                            size: 13,
-                            weight: '600'
-                        },
-                        padding: 10,
-                        autoSkip: false,
-                        maxRotation: 0,
-                        minRotation: 0
-                    },
-
-                    grid: {
-                        display: true,
-                        color: '#E1E7E9',
-                        lineWidth: 1
-                    }
+        title: {
+            text: null
+        },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: labelsAreasMensuales,
+            title: {
+                text: 'Período',
+                style: {
+                    color: '#1E4F63',
+                    fontWeight: '700'
                 }
             },
-
-            plugins: {
-
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    labels: {
-
-                        color: '#2F2F2F',
-                        padding: 18,
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                        boxWidth: 14,
-                        boxHeight: 14,
-                        font: {
-
-                            size: 13,
-                            weight: '600'
-                        }
-                    }
-                },
-
-                tooltip: {
-
-                    enabled: true,
-                    backgroundColor: '#1E4F63',
-                    titleColor: '#FFFFFF',
-                    bodyColor: '#FFFFFF',
-                    titleFont: {
-                        size: 14,
-                        weight: '700'
-                    },
-
-                    bodyFont: {
-                        size: 14,
-                        weight: '600'
-                    },
-
-                    padding: 12,
-                    displayColors: true,
-                    callbacks: {
-
-                        title: function(context) {
-
-                            if(!context || context.length === 0){
-
-                                return '';
-                            }
-
-                            const indice = context[0].dataIndex;
-
-                            return labelsAreasMensuales[indice];
-                        },
-
-                        label: function(context) {
-
-                            const valor = context.parsed.y;
-
-                            if(valor === null || valor === undefined){
-
-                                return context.dataset.label + ': Sin datos';
-                            }
-
-                            return context.dataset.label + ': ' + Number(valor)
-                                    .toFixed(1)
-                                    .replace('.', ',') +
-                                ' / 5';
-                        }
-                    }
+            labels: {
+                style: {
+                    color: '#2F2F2F',
+                    fontSize: '12px',
+                    fontWeight: '600'
+                }
+            },
+            lineColor: '#C9D4D8',
+            tickColor: '#C9D4D8'
+        },
+        yAxis: {
+            min: 1,
+            max: 5,
+            tickInterval: 1,
+            title: {
+                text: 'Promedio de satisfacción (1 a 5)',
+                style: {
+                    color: '#1E4F63',
+                    fontWeight: '700'
+                }
+            },
+            labels: {
+                style: {
+                    color: '#1E4F63',
+                    fontWeight: '600'
+                }
+            },
+            gridLineColor: '#E1E7E9'
+        },
+        legend: {
+            enabled: true,
+            align: 'center',
+            verticalAlign: 'bottom',
+            itemStyle: {
+                color: '#2F2F2F',
+                fontWeight: '600',
+                fontSize: '12px'
+            },
+            itemHoverStyle: {
+                color: '#1E4F63'
+            }
+        },
+        tooltip: {
+            shared: false,
+            backgroundColor: '#1E4F63',
+            borderColor: '#1E4F63',
+            borderRadius: 8,
+            style: {
+                color: '#FFFFFF',
+                fontSize: '13px'
+            },
+            formatter: function () {
+                return `
+                    <b>${this.series.name}</b><br>
+                    Período: ${this.x}<br>
+                    Satisfacción: <b>${Highcharts.numberFormat(this.y, 2, ',', '.')} / 5</b>
+                `;
+            }
+        },
+        plotOptions: {
+            column: {
+                grouping: true,
+                borderRadius: 3,
+                borderWidth: 0,
+                pointPadding: 0.08,
+                groupPadding: 0.12,
+                minPointLength: 2
+            },
+            series: {
+                animation: {
+                    duration: 1000
                 }
             }
+        },
+        series: seriesAreas,
+
+        lang: {
+            noData: 'No hay resultados disponibles para este período'
         }
     });
 
-    console.log('MESES:', labelsAreasMensuales);
-    console.log('DATOS:', datosAreasMensuales);
+    console.log('PERÍODOS DEL GRÁFICO:', labelsAreasMensuales);
+    console.log('SERIES POR CATEGORÍA:', seriesAreas);
+
 
     // REcomendación
-    const npsTexto = npsValor > 0 ? `+${npsValor}` : `${npsValor}`;
-    document.getElementById('npsValor').innerText = `${npsTexto} puntos`;
+    const npsTexto = npsValor > 0 ? `${npsValor}` : `${npsValor}`;
+    document.getElementById('npsValor').innerText = `${npsTexto} %`;
 
     // Evaluación de huéspedes
     const ctxNps = document.getElementById('graficoNps').getContext('2d');
@@ -1044,9 +918,9 @@
         type: 'pie',
         data: {
             labels: [
-                'Muy satisfechos',
-                'Satisfechos',
-                'Poco satisfechos'
+                'Promotores',
+                'Neutros',
+                'Detractores'
             ],
             datasets: [{
                 data: [

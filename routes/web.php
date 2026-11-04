@@ -65,6 +65,10 @@ Route::get('/test', function(){
 Route::get('/dashboard', [DashboardController::class,'index'])->middleware('auth');
 
 // Descargar reporte Excel
-Route::get('/reportes/exportar', function () {
-    return Excel::download(new ReporteHotelMae,'reporte-hotel-mae.xlsx');
+Route::get('/reportes/exportar', function (\Illuminate\Http\Request $request){
+
+    $periodo = $request->query('periodo', 'todo');
+
+    return Excel::download(new ReporteHotelMae($periodo), 'reporte-hotel-mae.xlsx');
+
 })->name('reportes.exportar.excel');

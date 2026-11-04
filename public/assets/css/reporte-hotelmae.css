@@ -1,0 +1,78 @@
+
+.dashboard-filtros {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.filtros-periodo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+}
+
+.filtro-label {
+    margin: 0;
+    color: #2F2F2F;
+    font-weight: 600;
+}
+
+.filtro-select {
+    min-width: 135px;
+    height: 40px;
+    padding: 0 12px;
+    color: #2F2F2F;
+    background: #fff;
+    border: 1px solid #D8C4A0;
+    border-radius: 6px;
+}
+
+.btn-filtrar,
+.btn-excel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.btn-filtrar {
+    color: #fff;
+    background: #1E4F63;
+    border: 1px solid #1E4F63;
+}
+
+.btn-filtrar:hover {
+    color: #fff;
+    background: #173D4D;
+    border-color: #173D4D;
+}
+
+.btn-excel {
+    margin: 0;
+}
+
+@media (max-width: 576px) {
+    .dashboard-filtros {
+        align-items: stretch;
+    }
+
+    .filtros-periodo {
+        width: 100%;
+    }
+
+    .filtro-select {
+        flex: 1;
+        min-width: 0;
+    }
+}
