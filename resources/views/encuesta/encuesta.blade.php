@@ -155,11 +155,11 @@
                                         </div>
                                         <div class="seccion-contenido">
                                 @endif
-
+                
                                 @php
                                     $numeroPregunta++;
-                                @endphp
-                                
+                                @endphp                   
+ 
                                 {{-- Preguntas --}}
                                 <div class="nps-form pregunta-encuesta" style="text-align: justify;">
                                     <div class="pregunta-titulo">
@@ -167,6 +167,20 @@
                                     </div>
                                     <div class="pregunta-respuesta">
                                         {!! str_replace(['__INDEX__', '__ID__'], [$numeroPregunta, $pregunta->id_pregunta], $pregunta->tipo_pregunta->etiqueta) !!}
+
+                                        @if(str_contains(mb_strtolower($nombreCategoria), 'nps'))
+                                            <div class="nps-simbologia mt-3">
+                                                <span class="nps-leyenda detractor">
+                                                    <strong>0–6</strong> Detractor
+                                                </span>
+                                                <span class="nps-leyenda neutro">
+                                                    <strong>7–8</strong> Neutro
+                                                </span>
+                                                <span class="nps-leyenda promotor">
+                                                    <strong>9–10</strong> Promotor
+                                                </span>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
@@ -239,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const opcionTodas = document.querySelector('.opcion-principal');
     const inputTodas = opcionTodas.querySelector('input');
     const opcionesCategorias = document.querySelectorAll('.categoria-check');
+
 
     opcionesSeccion.forEach(function(opcion){
 

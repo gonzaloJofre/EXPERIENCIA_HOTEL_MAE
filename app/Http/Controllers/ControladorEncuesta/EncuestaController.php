@@ -213,11 +213,9 @@ class EncuestaController extends Controller
                         );
                     }
                 })
-                ->select(
-                    'pregunta.*',
-                    'categoria.categoria as nombre_categoria'
-                )
+                ->select('pregunta.*', 'categoria.categoria as nombre_categoria')
                 ->with('tipo_pregunta')
+                ->orderByRaw("CASE WHEN LOWER(categoria.categoria) = 'información general' THEN 0 ELSE 1 END")
                 ->orderBy('pregunta.id_pregunta')
                 ->get();
 

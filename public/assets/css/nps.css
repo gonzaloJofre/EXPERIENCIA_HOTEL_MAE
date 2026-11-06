@@ -69,3 +69,38 @@
     cursor: pointer;
     color: var(--color);
 }
+
+/* Simbología en NPS - Encuesta ! */
+.nps-simbologia{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    background: #F7F7F7;
+    border-radius: 8px;
+}
+
+.nps-leyenda{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    padding: 7px 12px;
+    border-radius: 20px;
+}
+
+.nps-leyenda.detractor{
+    color: #A83232;
+    background: #FCE8E8;
+}
+
+.nps-leyenda.neutro{
+    color: #856404;
+    background: #FFF3CD;
+}
+
+.nps-leyenda.promotor{
+    color: #246B45;
+    background: #DFF3E6;
+}

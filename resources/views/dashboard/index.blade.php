@@ -699,7 +699,7 @@
                 ],
                 backgroundColor: [
                     '#1E4F63',
-                    '#FF6347'
+                    '#D8A84E'
                 ],
                 borderColor: '#FFFFFF',
                 borderWidth: 2
@@ -777,7 +777,8 @@
         '#5B8C5A',
         '#8A5A83',
         '#B65C5C',
-        '#6C757D'
+        '#6C757D',
+        '#D8C4A0'
     ];
 
     // Transformar los datos PHP al formato de series de Highcharts
@@ -875,7 +876,6 @@
             formatter: function () {
                 return `
                     <b>${this.series.name}</b><br>
-                    Período: ${this.x}<br>
                     Satisfacción: <b>${Highcharts.numberFormat(this.y, 2, ',', '.')} / 5</b>
                 `;
             }
