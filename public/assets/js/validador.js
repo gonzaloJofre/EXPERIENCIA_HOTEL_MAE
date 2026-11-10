@@ -90,14 +90,21 @@ function validarSeccion(seccion) {
         }
 
         // Textarea
-        if (inputs.is('textarea')) {
+        if(inputs.is('textarea')){
 
             let valor = inputs.first().val().trim();
+
+            // La categoría "Comentarios" es opcional
+            let categoria = $(seccion).data('categoria');
+
+            if (categoria === 'Comentarios'){
+                return;
+            }
 
             if(valor === ''){
 
                 valido = false;
-                mensajes.push({pregunta: numeroPregunta,texto: 'Completa este campo.'});
+                mensajes.push({ pregunta: numeroPregunta, texto: 'Completa este campo.' });
                 contenedor.addClass('error-pregunta');
             }
         }

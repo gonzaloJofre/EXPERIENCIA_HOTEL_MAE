@@ -1,0 +1,215 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px 15px;
+    background: #F7F7F7;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2F2F2F;
+}
+
+.correo-container{
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.correo-header{
+    padding: 12px 20px;
+    text-align: center;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.logo-mae{
+    display: block;
+    width: 130px;
+    max-width: 80%;
+    height: auto;
+    margin: 0 auto;
+}
+
+.correo-contenido{
+    padding: 35px 35px 30px;
+    text-align: center;
+}
+
+.correo-contenido h1{
+    color: #1E4F63;
+    font-size: 26px;
+    margin: 0 0 20px;
+}
+
+.texto-intro{
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0 auto;
+    max-width: 520px;
+}
+
+.separador{
+    width: 60px;
+    height: 3px;
+    margin: 28px auto;
+    background: #D8C4A0;
+}
+
+.correo-contenido h2{
+    color: #1E4F63;
+    font-size: 20px;
+    line-height: 1.5;
+    margin: 0 auto 12px;
+    max-width: 500px;
+}
+
+.instruccion{
+    font-size: 14px;
+    margin: 0 0 15px;
+}
+
+/* Escala NPS: replica la distribución de nps.css */
+
+.nps-rating{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.nps-numero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    padding: 10px;
+    border: 2px solid;
+    border-radius: 100%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: #FFFFFF;
+}
+
+/* Colores de los números según la encuesta real */
+
+.nps-numero.detractor{
+    color: red;
+    border-color: red;
+}
+
+.nps-numero.neutro{
+    color: rgb(223, 190, 2);
+    border-color: rgb(223, 190, 2);
+}
+
+.nps-numero.promotor{
+    color: #00FF00;
+    border-color: #00FF00;
+}
+
+/* Extremos de la escala */
+.nps-extremos{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666666;
+}
+
+/* Simbología completa del NPS */
+.nps-simbologia{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    margin-top: 18px;
+    background: #F7F7F7;
+    border-radius: 8px;
+}
+
+.nps-leyenda{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    padding: 7px 12px;
+    border-radius: 20px;
+}
+
+.nps-leyenda.detractor{
+    color: #A83232;
+    background: #FCE8E8;
+}
+
+.nps-leyenda.neutro{
+    color: #856404;
+    background: #FFF3CD;
+}
+
+.nps-leyenda.promotor{
+    color: #246B45;
+    background: #DFF3E6;
+}
+
+.texto-cierre{
+    margin: 28px 0 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.correo-footer{
+    padding: 22px 15px;
+    text-align: center;
+    background: #1E4F63;
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.correo-footer p{
+    margin: 4px 0;
+}
+
+@media (max-width: 500px){
+
+    body{
+        padding: 10px;
+    }
+
+    .correo-contenido{
+        padding: 25px 18px;
+    }
+
+    .correo-contenido h1{
+        font-size: 22px;
+    }
+
+    .correo-contenido h2{
+        font-size: 17px;
+    }
+
+    .nps-rating {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+    }
+
+    .nps-numero {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 350px){
+
+    .nps-rating {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

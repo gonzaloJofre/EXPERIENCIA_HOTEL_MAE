@@ -140,14 +140,13 @@
 
                                     @php
                                         $categoriaActual = $nombreCategoria;
-                                        $descripcionCategoria = $descripcionesCategorias[$nombreCategoria]
-                                            ?? 'Cuéntenos sobre su experiencia en Hotel MAE.';
+                                        $descripcionCategoria = $descripcionesCategorias[$nombreCategoria] ?? 'Cuéntenos sobre su experiencia en Hotel MAE.';
                                     @endphp
 
                                     <div class="seccion-encuesta" data-categoria="{{ $nombreCategoria }}" style="display:none;">
                                         <div class="seccion-header">
                                             <h3 class="seccion-titulo">
-                                                {{ $nombreCategoria }}
+                                                {{ $nombreCategoria === 'Comentarios' ? 'Comentarios (Opcional)' : $nombreCategoria }}
                                             </h3>
                                             <p class="seccion-descripcion">
                                                 {{ $descripcionCategoria }}
