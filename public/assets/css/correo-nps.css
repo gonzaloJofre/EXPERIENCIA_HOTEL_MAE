@@ -1,4 +1,3 @@
-
 * {
     box-sizing: border-box;
 }
@@ -74,7 +73,6 @@ body {
 }
 
 /* Escala NPS: replica la distribución de nps.css */
-
 .nps-rating{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
@@ -98,7 +96,6 @@ body {
 }
 
 /* Colores de los números según la encuesta real */
-
 .nps-numero.detractor{
     color: red;
     border-color: red;
@@ -112,6 +109,22 @@ body {
 .nps-numero.promotor{
     color: #00FF00;
     border-color: #00FF00;
+}
+
+/* Hover de los números NPS para que se asemeje al de la encuesta*/
+.nps-numero.detractor:hover{
+    background-color: red;
+    color: #FFFFFF;
+}
+
+.nps-numero.neutro:hover{
+    background-color: rgb(223, 190, 2);
+    color: #FFFFFF;
+}
+
+.nps-numero.promotor:hover{
+    background-color: #00FF00;
+    color: #FFFFFF;
 }
 
 /* Extremos de la escala */

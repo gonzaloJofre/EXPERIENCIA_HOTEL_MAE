@@ -165,7 +165,20 @@
                                         {{ $numeroPregunta }}. - {{ $pregunta->pregunta }}
                                     </div>
                                     <div class="pregunta-respuesta">
-                                        {!! str_replace(['__INDEX__', '__ID__'], [$numeroPregunta, $pregunta->id_pregunta], $pregunta->tipo_pregunta->etiqueta) !!}
+                                        @php
+                                            $htmlTipoPregunta = str_replace(['__INDEX__', '__ID__'], [$numeroPregunta, $pregunta->id_pregunta], $pregunta->tipo_pregunta->etiqueta);
+
+                                            //Si la pregunta es NPS y existe un valor enviado desde EL correo se marcará automáticamente
+                                            if ((int) $pregunta->id_tipo_pregunta === 1 && $nps_preseleccionado !== null) {
+                                                $valorNps = preg_quote((string) $nps_preseleccionado, '/');
+                                                
+                                                $htmlTipoPregunta = preg_replace( '/(<input\b[^>]*\bvalue=["\']' . $valorNps . '["\'][^>]*)(>)/i', '$1 checked$2',
+                                                    $htmlTipoPregunta, 1
+                                                );
+                                            }
+                                        @endphp
+
+                                        {!! $htmlTipoPregunta !!}
 
                                         @if(str_contains(mb_strtolower($nombreCategoria), 'nps'))
                                             <div class="nps-simbologia mt-3">

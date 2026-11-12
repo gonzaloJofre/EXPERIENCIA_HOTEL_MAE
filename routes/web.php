@@ -57,7 +57,18 @@ Route::get('/test', function(){
     $idEnvio    = base64_encode(base64_encode(base64_encode(5))); //1,2,3,4
     $idEmpresa  = base64_encode(base64_encode(base64_encode(1)));
     // dd($idEmpresa);
-    return redirect("/encuesta/$idEncuesta/$idEnvio/$idEmpresa");
+
+    $url = "/encuesta/$idEncuesta/$idEnvio/$idEmpresa";
+
+    //Si existe un NPS seleccionado por un usuario entonces se envía a la encuesta (No es necesario para probar la encuesta, se puede solo con /test)
+    //Ejemplo http://localhost:9191/test?nps=6 o http://localhost:9191/test
+    $nps = request()->query('nps');
+
+    if($nps !== null && is_numeric($nps) && (int) $nps >= 0 && (int) $nps <= 10){
+        $url .= '?nps=' . (int) $nps;
+    }
+
+    return redirect($url);
 });
 
 // Creación de reporte

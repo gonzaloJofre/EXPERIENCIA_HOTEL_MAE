@@ -35,6 +35,16 @@ class EncuestaController extends Controller
         $id_encuesta = base64_decode(base64_decode(base64_decode($id_encuesta)));
         $id_envio    = base64_decode(base64_decode(base64_decode($id_envio)));
 
+        //NPS enviado desde el correo
+        $nps_preseleccionado = $request->query('nps');
+
+        if($nps_preseleccionado !== null && (!is_numeric($nps_preseleccionado) || (int) $nps_preseleccionado < 0 || (int) $nps_preseleccionado > 10)){
+            $nps_preseleccionado = null;
+        }
+
+        if($nps_preseleccionado !== null){
+            $nps_preseleccionado = (int) $nps_preseleccionado;
+        }
 
         $estado_encuesta = EnvioEncuesta::where(
             'id_envio_encuesta',
@@ -221,12 +231,12 @@ class EncuestaController extends Controller
 
             //Mostrar encuesta completa según corresponda 
             return view('encuesta.encuesta', [
-                'encuesta'     => $encuesta,
-                'preguntas'    => $preguntas,
-                'empresa'      => $empresa,
-                'id_servicios' => $id_servicios,
+                'encuesta'            => $encuesta,
+                'preguntas'           => $preguntas,
+                'empresa'             => $empresa,
+                'id_servicios'        => $id_servicios,
+                'nps_preseleccionado' => $nps_preseleccionado,
             ]);
-
         }else{
 
             return redirect()->route(
